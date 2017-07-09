@@ -101,7 +101,7 @@ class OpalApplication(object):
     menuitems     = [
         menus.MenuItem(
             href="/#/list/", activepattern="/list/",
-            icon="fa-table", display="Lists",
+            icon="fa-table", display="Danh Sách",
             index=0
         )
     ]
@@ -137,7 +137,7 @@ class OpalApplication(object):
             href=reverse(logout_view), icon="fa-sign-out", index=1000
         )
         admin = menus.MenuItem(
-            href="/admin/", icon="fa-cogs", display="Admin",
+            href="/admin/", icon="fa-cogs", display="Quản Trị",
             index=999
         )
         items = []

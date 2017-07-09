@@ -8,7 +8,6 @@ angular.module('opal.controllers').controller(
         $scope.patient = patient;
         $scope.episode = patient.episodes[0];
         $scope.view = null;
-
         $scope.refresh = function(){
           patientLoader().then(function(refreshedPatient){
             $scope.patient = refreshedPatient;
@@ -71,6 +70,23 @@ angular.module('opal.controllers').controller(
             exit.then(function(result) {
 			    $rootScope.state = 'normal';
 		    });
+	    };
+        var demographics = $scope.patient.demographics[0].makeCopy();
+        for (var key in demographics) {
+            if (demographics.hasOwnProperty(key) && key.startsWith('_')) {
+                delete demographics[key];
+            }
+        }
+	    $scope.addEpisode = function(event) {
+            enter = Flow.enter(
+                {
+                    patientId: $scope.patient.id,  // Not sure if this is really necessary
+                    demographics: Object.assign(demographics, {patient_id: $scope.patient.id})
+                },
+                $scope
+            );
+
+            enter.then($scope.refresh);
 	    };
 
       $scope.initialise();

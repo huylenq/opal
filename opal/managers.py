@@ -17,9 +17,10 @@ class PatientQueryset(models.QuerySet):
     def search(self, some_query):
         """
         splits a string by space and queries
+
         first name, last name and hospital number
         """
-        fields = ["hospital_number", "first_name", "surname"]
+        fields = ["name", "hospital_number", "phone_number"]
 
         query_values = some_query.split(" ")
         qs = self

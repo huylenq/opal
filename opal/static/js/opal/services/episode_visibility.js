@@ -22,9 +22,24 @@ angular.module('opal.services')
         var demographics = episode.demographics[0];
         var hospital_number = $scope.query.hospital_number;
         var name = $scope.query.name;
-        var ward = $scope.query.ward;
-        var bed = $scope.query.bed;
-        var patient_name = demographics.first_name + ' ' + demographics.surname;
+        // var ward = $scope.query.ward;
+        // var bed = $scope.query.bed;
+        // var patient_name = demographics.first_name + ' ' + demographics.surname;
+        var patient_name = demographics.name;
+
+        function match(text, sample) {
+            return text && (text.toLowerCase().indexOf(sample.toLowerCase()) !== -1);
+        }
+
+        if ($scope.query.simple
+            && !(match(demographics.hospital_number, $scope.query.simple)
+                 || match(demographics.name, $scope.query.simple)
+                 || match(demographics.phone_number, $scope.query.simple))) {
+            return false;
+        }
+        // if ($scope.query.simple) {
+        //     debugger;
+        // }
 
         // filtered out by hospital number
         if (demographics.hospital_number &&
@@ -34,31 +49,31 @@ angular.module('opal.services')
 	    }
 
         // Filtered out by name.
-        if (name &&  patient_name && // Was it passed in?
+        if (name && patient_name && // Was it passed in?
             patient_name.toLowerCase().indexOf(name.toLowerCase()) == -1) {
 		    return false;
 	    }
 
 
         // Filtered out by ward.
-        if (ward &&  // Was it passed in?
-            location.ward.toLowerCase().indexOf(ward.toLowerCase()) == -1) {
-		    return false;
-	    }
+        // if (ward &&  // Was it passed in?
+        //     location.ward.toLowerCase().indexOf(ward.toLowerCase()) == -1) {
+		//     return false;
+	    // }
 
-        if(bed){
-            if(bed.indexOf('-') == -1 ){
-                return location.bed == bed
-            }else{
-                var pair = bed.split('-')
-                var frist = pair[0];
-                var last = pair[1]
-                if( location.bed <= last && location.bed >= frist){
-                    return true
-                }
-                return false;
-            }
-        }
+        // if(bed){
+        //     if(bed.indexOf('-') == -1 ){
+        //         return location.bed == bed
+        //     }else{
+        //         var pair = bed.split('-')
+        //         var frist = pair[0];
+        //         var last = pair[1]
+        //         if( location.bed <= last && location.bed >= frist){
+        //             return true
+        //         }
+        //         return false;
+        //     }
+        // }
 
         return true;
 	}

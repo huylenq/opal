@@ -4,9 +4,9 @@
     {% block icon %}<i class="{% block icon_name %}{{ icon }}{% endblock %}"></i>{% endblock %}
     {% block title %}
     {{title}}
-    <span ng-show="profile.can_see_pid() && editingName">
-      ([[ editingName]])
-    </span>
+      <span ng-show="profile.can_see_pid() && editingName">
+          ([[ editingName]])
+      </span>
     {% endblock %}
   </h3>
     {% block process_steps %}

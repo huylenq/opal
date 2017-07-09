@@ -17,7 +17,6 @@ from opal.core.subrecords import subrecords
 from opal.core.views import json_response
 from opal.core.patient_lists import PatientList
 
-
 app = application.get_app()
 
 
@@ -324,13 +323,12 @@ class EpisodeViewSet(LoginRequiredViewset):
         location_data     = request.data.pop('location', {})
         tagging           = request.data.pop('tagging', {})
 
-        hospital_number = demographics_data.get('hospital_number', None)
-        if hospital_number:
-            patient, created = Patient.objects.get_or_create(
-                demographics__hospital_number=hospital_number)
+        patient_id = demographics_data.get('patient_id', None)
+        if patient_id:
+            patient, created = Patient.objects.get_or_create(id=patient_id)
             if created:
                 demographics = patient.demographics_set.get()
-                demographics.hospital_number = hospital_number
+                # demographics.hospital_number = hospital_number
                 demographics.save()
         else:
             patient = Patient.objects.create()
@@ -343,7 +341,6 @@ class EpisodeViewSet(LoginRequiredViewset):
         location.update_from_dict(location_data, request.user)
         episode.set_tag_names(list(tagging.keys()), request.user)
         serialised = episode.to_dict(request.user)
-
         return json_response(
             serialised, status_code=status.HTTP_201_CREATED
         )

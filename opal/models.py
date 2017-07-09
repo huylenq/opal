@@ -1570,6 +1570,7 @@ treatment."
 
 class Allergies(PatientSubrecord):
     _icon = 'fa fa-warning'
+    _title = 'Dị Ứng'
 
     drug        = ForeignKeyOrFreeText(Drug)
     provisional = models.BooleanField(
@@ -1587,7 +1588,7 @@ class Diagnosis(EpisodeSubrecord):
     This is a working-diagnosis list, will often contain things that are
     not technically diagnoses, but is for historical reasons, called diagnosis.
     """
-    _title = 'Diagnosis / Issues'
+    _title = 'Chẩn đoán'
     _sort = 'date_of_diagnosis'
     _icon = 'fa fa-stethoscope'
 
@@ -1880,3 +1881,14 @@ these symptoms when recorded."
         }
         result["symptoms"] = list(self.symptoms.values_list("name", flat=True))
         return result
+
+
+class Notes(EpisodeSubrecord):
+    _sort = 'description'
+    _icon = 'fa fa-pencil-square-o'
+    _title = "Ghi Chú"
+
+    description = models.CharField(max_length=10000, blank=True, verbose_name="Mô tả")
+
+    class Meta:
+        abstract = True

@@ -4,7 +4,6 @@ angular.module('opal.controllers').controller(
                                 $modal, $rootScope, $window, $injector,
                                 growl, Flow, Item, Episode,
                                 episodedata, metadata, profile, episodeVisibility){
-
         $scope.ready = false;
         var version = window.version;
         if(episodedata.status == 'error'){
@@ -27,8 +26,9 @@ angular.module('opal.controllers').controller(
   	        $scope.rix = 0; // row index
             $scope._ =  _;
 
+            // TODO @huyle: what doesj this do?
   	        $scope.query = {
-                hospital_number: '', first_name: '', surname: '', ward: '', bed: ''
+                hospital_number: '', first_name: '', surname: '', ward: '', bed: '', simple: ''
             };
             $scope.$location = $location;
             $scope.path_base = '/list/';
@@ -152,6 +152,10 @@ angular.module('opal.controllers').controller(
 		    $scope.rows = $scope.getVisibleEpisodes();
 	    });
 
+	    $scope.$watch('query.simple', function() {
+		    $scope.rows = $scope.getVisibleEpisodes();
+	    });
+
 	    $scope.$on('keydown', function(event, e) {
 		    if ($rootScope.state == 'normal') {
 			    switch (e.keyCode) {
@@ -203,6 +207,26 @@ angular.module('opal.controllers').controller(
 	    };
 
 	    $scope.addEpisode = function() {
+            // $modal.open({
+            //     templateUrl: '/templates/modals/add_episode.html',
+            //     controller: 'AddEpisodeCtrl',
+            //     resolve: {
+            //         referencedata: function(Referencedata) {
+            //             return Referencedata.load();
+            //         },
+            //         demographics: function() {
+            //             return {};
+            //         },
+            //         tags: function(){ return {}; }
+            //     }
+            // }).result.then(function(result) {
+            //     // The user has created the episode, or cancelled
+            //     $modalInstance.close(result);
+            // });
+
+            // return;
+
+            // Old code
             if(profile.readonly){ return null; };
 
             var enter = Flow.enter(
@@ -256,8 +280,11 @@ angular.module('opal.controllers').controller(
                             else{
                                 newTag = newTags[0];
                             }
-                            msg += " added to the " + metadata.tags[newTag].display_name + " list";
-                            growl.success(msg);
+                            // Since I added addEpisode on patient_detail, this tagging stuff is broken
+                            if (metadata.tags[newTag]) {
+                                msg += " added to the " + metadata.tags[newTag].display_name + " list";
+                                growl.success(msg);
+                            }
 
   		                }
                     };

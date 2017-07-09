@@ -282,6 +282,41 @@ recently changed it - refresh the page and try again');
                 deferred.resolve(result);
             }
         }
+
+        Episode.findByPatientId = function(patientId, callbacks){
+            var deferred = $q.defer();
+            var result = {
+                patients: [],
+                patientId: patientId
+            };
+            // record loader is used by the field translater to
+            // cast the results fields
+            deferred.promise.then(function(result){
+                if(!result.patients.length){
+                    callbacks.newPatient(result);
+                }else if(result.patients.length == 1){
+                    var patient = FieldTranslater.patientToJs(result.patients[0]);
+                    callbacks.newForPatient(patient)
+                }else{
+                    callbacks.error();
+                }
+            });
+
+            if(patientId){
+                // The user entered a hospital number
+                $http.get('/search/patient/?id=' + patientId)
+                    .success(function(response) {
+                        // We have retrieved patient records matching the hospital number
+                        result.patients = response;
+                        // cast the patient fields
+                        deferred.resolve(result);
+
+                    });
+            }else{
+                deferred.resolve(result);
+            }
+        };
+
         return Episode
 
     });
