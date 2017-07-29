@@ -545,10 +545,10 @@ class Patient(models.Model):
     def __unicode__(self):
         try:
             demographics = self.demographics_set.get()
-            return '%s | %s %s' % (
+            return '%s | %s' % (
                 demographics.hospital_number,
-                demographics.first_name,
-                demographics.surname
+                # FIXME: @huyle can this be expose to the app's model and be overriden? 
+                demographics.name
             )
         except models.ObjectDoesNotExist:
             return 'Patient {0}'.format(self.id)
