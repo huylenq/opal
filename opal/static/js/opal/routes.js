@@ -3,7 +3,8 @@ var app = angular.module('opal');
 app.config(
     ['$routeProvider',
      function($routeProvider) {
-         $routeProvider.when('/list/',{
+        $routeProvider.when('/',  {redirectTo: '/list'})
+         .when('/list/',{
              controller: 'PatientListRedirectCtrl',
              templateUrl: '/templates/loading_page.html',
              resolve: {
