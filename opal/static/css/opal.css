@@ -1140,3 +1140,22 @@ hr.bold{
 .text-avatar{
     height: 20px;
 }
+
+/* Huy Le customization */
+
+.panel-primary > .panel-heading {
+    background-color: #1E86FF;
+    border-color: #1E86FF;
+}
+
+.btn-primary {
+    background-color: #1E86FF;
+}
+
+.btn-primary:hover {
+    background-color: #52A3FF;
+}
+
+.fa-5x {
+    color: #1E86FF;
+}
