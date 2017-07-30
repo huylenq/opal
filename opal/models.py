@@ -1538,7 +1538,7 @@ class Location(EpisodeSubrecord):
 
     def __unicode__(self):
         demographics = self.episode.patient.demographics_set.get()
-        return 'Location for {0}({1}) {2} {3} {4} {5}'.format(
+        return u'Location for {0}({1}) {2} {3} {4} {5}'.format(
             demographics.name,
             demographics.hospital_number,
             self.category,
